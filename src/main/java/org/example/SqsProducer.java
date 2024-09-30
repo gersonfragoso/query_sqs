@@ -4,6 +4,8 @@ import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.sqs.SqsClient;
 import software.amazon.awssdk.services.sqs.model.SendMessageRequest;
 
+import java.net.URI;
+
 public class SqsProducer {
 
     // Substitua pelos valores reais
@@ -12,7 +14,8 @@ public class SqsProducer {
     public static void main(String[] args) {
         // Cria o cliente SQS
         SqsClient sqsClient = SqsClient.builder()
-                .region(Region.US_EAST_1) // Substitua pela sua região
+                .region(Region.US_EAST_1)
+                .endpointOverride(URI.create("http://localhost:4566"))
                 .build();
 
         // Envia uma mensagem
