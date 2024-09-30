@@ -6,6 +6,7 @@ import software.amazon.awssdk.services.sqs.model.DeleteMessageRequest;
 import software.amazon.awssdk.services.sqs.model.Message;
 import software.amazon.awssdk.services.sqs.model.ReceiveMessageRequest;
 
+import java.net.URI;
 import java.util.List;
 
 public class SqsConsumer {
@@ -16,6 +17,7 @@ public class SqsConsumer {
         // Cria o cliente SQS
         SqsClient sqsClient = SqsClient.builder()
                 .region(Region.US_EAST_1)
+                .endpointOverride(URI.create("http://localhost:4566"))
                 .build();
 
         // Recebe e processa mensagens
@@ -26,7 +28,6 @@ public class SqsConsumer {
     }
 
     public static void receiveMessages(SqsClient sqsClient) {
-        try {
             ReceiveMessageRequest receiveRequest = ReceiveMessageRequest.builder()
                     .queueUrl(QUEUE_URL)
                     .maxNumberOfMessages(5)
@@ -46,8 +47,5 @@ public class SqsConsumer {
                 sqsClient.deleteMessage(deleteRequest);
                 System.out.println("Mensagem excluída: " + message.body());
             }
-        } catch (Exception e) {
-            System.err.println("Erro ao receber ou excluir mensagens: " + e.getMessage());
         }
-    }
 }
